@@ -4,14 +4,34 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import com.nzsoft.fridgelist.adapter.ItemFridgeAdapter;
+import com.nzsoft.fridgelist.data.dto.ItemFridge;
+import com.nzsoft.fridgelist.data.service.ItemFridgeService;
+import com.nzsoft.fridgelist.data.service.impl.ItemFridgeServiceImpl;
+
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private ListView itemFridgeListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        itemFridgeListView = (ListView) findViewById(R.id.itemFridgeListView);
+
+        ItemFridgeService itemFridgeService = new ItemFridgeServiceImpl();
+
+        List<ItemFridge> itemFridgeList = itemFridgeService.getAllItemsFridge();
+
+        ItemFridgeAdapter itemFridgeAdapter = new ItemFridgeAdapter(this, itemFridgeList);
+
+        itemFridgeListView.setAdapter(itemFridgeAdapter);
     }
 
 
