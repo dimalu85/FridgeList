@@ -10,15 +10,19 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/itemFridgeName"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:layout_weight="2"
+        android:textColor="@android:color/primary_text_light"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/itemFridgeCount"
-        android:layout_gravity="right"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:layout_weight="0"
+        android:textAlignment="viewEnd"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/primary_text_light"/>
 
 </LinearLayout>

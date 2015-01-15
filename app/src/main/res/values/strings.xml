@@ -4,5 +4,7 @@
     <string name="app_name">FridgeList</string>
     <string name="hello_world">Test message</string>
     <string name="action_settings">Settings</string>
+    <string name="buttonNoteText">Note</string>
+    <string name="buttonFridgeText">Fridge</string>
 
 </resources>

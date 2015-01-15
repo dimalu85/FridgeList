@@ -55,7 +55,7 @@ public class ItemFridgeAdapter extends BaseAdapter {
         itemFridgeNameView.setText(itemFridge.toString());
 
         TextView itemFridgeCountView = (TextView) view.findViewById(R.id.itemFridgeCount);
-        itemFridgeCountView.setText(new Double(itemFridge.getCount()).toString());
+        itemFridgeCountView.setText(Double.toString(itemFridge.getCount()));
 
 
         return view;

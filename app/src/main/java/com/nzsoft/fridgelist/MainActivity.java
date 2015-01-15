@@ -1,39 +1,89 @@
 package com.nzsoft.fridgelist;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.nzsoft.fridgelist.adapter.ItemFridgeAdapter;
+import com.nzsoft.fridgelist.adapter.ItemNoteAdapter;
 import com.nzsoft.fridgelist.data.dto.ItemFridge;
+import com.nzsoft.fridgelist.data.dto.ItemNote;
 import com.nzsoft.fridgelist.data.service.ItemFridgeService;
+import com.nzsoft.fridgelist.data.service.ItemNoteService;
 import com.nzsoft.fridgelist.data.service.impl.ItemFridgeServiceImpl;
+import com.nzsoft.fridgelist.data.service.impl.ItemNoteServiceImpl;
+import com.nzsoft.fridgelist.fragment.FridgeListFragment;
+import com.nzsoft.fridgelist.fragment.NoteListFragment;
 
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity {
 
-    private ListView itemFridgeListView;
+    private FridgeListFragment fridgeListFragment;
+    private NoteListFragment noteListFragment;
+
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+
+    private View previousBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        itemFridgeListView = (ListView) findViewById(R.id.itemFridgeListView);
+        previousBtn = (View) findViewById(R.id.buttonNote);
+        previousBtn.setBackgroundResource(R.drawable.changelistbutton);
 
-        ItemFridgeService itemFridgeService = new ItemFridgeServiceImpl();
+        fridgeListFragment = new FridgeListFragment();
+        noteListFragment = new NoteListFragment();
 
-        List<ItemFridge> itemFridgeList = itemFridgeService.getAllItemsFridge();
+        fragmentManager = getFragmentManager();
 
-        ItemFridgeAdapter itemFridgeAdapter = new ItemFridgeAdapter(this, itemFridgeList);
+        fragmentTransaction = fragmentManager.beginTransaction();
 
-        itemFridgeListView.setAdapter(itemFridgeAdapter);
+        if(fragmentManager.findFragmentByTag(NoteListFragment.TAG) == null){
+            fragmentTransaction.add(R.id.container, noteListFragment,NoteListFragment.TAG);
+        }
+
+        fragmentTransaction.commit();
+
     }
 
+    public void onChangeListButtonClick(View view) {
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        switch (view.getId()) {
+            case R.id.buttonFridge:
+                if(fragmentManager.findFragmentByTag(NoteListFragment.TAG) != null){
+                    fragmentTransaction.replace(R.id.container, fridgeListFragment,FridgeListFragment.TAG);
+                }
+                view.setBackgroundResource(R.drawable.changelistbutton);
+                previousBtn = (View) view.getRootView().findViewById(R.id.buttonNote);
+                previousBtn.setBackgroundResource(R.drawable.btn_default);
+                break;
+            case R.id.buttonNote:
+                if(fragmentManager.findFragmentByTag(FridgeListFragment.TAG) != null){
+                    fragmentTransaction.replace(R.id.container, noteListFragment,NoteListFragment.TAG);
+                }
+                view.setBackgroundResource(R.drawable.changelistbutton);
+                previousBtn = (View) view.getRootView().findViewById(R.id.buttonFridge);
+                previousBtn.setBackgroundResource(R.drawable.btn_default);
+                break;
+        }
+
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
